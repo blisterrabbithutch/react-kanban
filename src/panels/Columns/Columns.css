@@ -1,0 +1,36 @@
+.Column__content {
+    background: white;
+    border: 1px solid lightgray;
+    box-sizing: border-box;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.Column__content .Button__create {
+    margin-top: 8px;
+}
+
+.Column__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.Column__title {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.Column {
+    box-sizing: border-box;
+}
+
+.Columns .Panel__in {
+    display: flex;
+    flex-direction: column;
+}
+
+.Columns__list {
+    flex-grow: 1;
+    height: auto;
+}
