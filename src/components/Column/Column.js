@@ -1,21 +1,17 @@
-import React, {Fragment} from 'react';
-import {PanelHeader, Button, Div, Card, CardGrid, Header} from "@vkontakte/vkui/dist/index";
-import DeskCreate from "../DeskCreate/DeskCreate";
-import DeskList from "../DeskList/DeskList";
+import React, { useContext } from 'react';
+import Context from '../App/Context';
+import {Button, Div, Card, Header} from "@vkontakte/vkui/dist/index";
 import PropTypes from 'prop-types';
-import ColumnCard from "../ColumnCard/ColumnCard";
 import Cards from "../Cards/Cards";
 import '../../panels/Columns/Columns.css';
-import ColumnCreate from "../ColumnCreate/ColumnCreate";
-import firebase from "firebase";
+import {deleteColumn} from "../../actions";
 
-const Column = ({name, id, onDelete}) => {
-  const deleteColumn = () => {
-    const db = firebase.firestore();
-    db.collection("columns")
-      .doc(id)
-      .delete()
-      .then(() => onDelete(id))
+const Column = ({name, id}) => {
+  const { removeColumn } = useContext(Context);
+
+  const deleteItem = () => {
+    deleteColumn(id)
+      .then(() => removeColumn(id))
       .catch(console.error);
   };
 
@@ -23,7 +19,7 @@ const Column = ({name, id, onDelete}) => {
     <Div className="Column">
       <div className="Column__header">
         <Header className="Column__title">{name}</Header>
-        <Button mode='destructive' onClick={deleteColumn}>Удалить</Button>
+        <Button mode='destructive' onClick={deleteItem}>Удалить</Button>
       </div>
 
       <Card className="Column__content">
@@ -36,7 +32,6 @@ const Column = ({name, id, onDelete}) => {
 Column.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  onDelete: PropTypes.func.isRequired,
 };
 
 export default Column;

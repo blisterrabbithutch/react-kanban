@@ -6,14 +6,15 @@ import Icon24AddOutline from '@vkontakte/icons/dist/24/add_outline';
 const modes = {
   button: 'button',
   form: 'form'
-}
+};
 
 const statuses = {
   default: 'default',
   error: 'error',
-}
+};
 
 const CreateForm = ({onSubmit, placeholder, actionTitle}) => {
+  console.log('onSubmit', onSubmit);
   const [mode, setMode] = useState(modes.button);
   const [deskName, setDeskName] = useState('');
   const [inputStatus, setInputStatus] = useState('default');
@@ -32,8 +33,7 @@ const CreateForm = ({onSubmit, placeholder, actionTitle}) => {
       setInputStatus(statuses.error);
       return;
     }
-    onSubmit(deskName)
-      .then(formReset)
+    onSubmit(deskName).then(formReset);
   };
 
   if (mode === modes.button) {

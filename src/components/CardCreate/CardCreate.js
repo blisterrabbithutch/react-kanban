@@ -1,26 +1,17 @@
-import React, {useState} from 'react';
-import {Button, Div, Card, FormLayout, Input} from "@vkontakte/vkui/dist/index";
+import React, {useContext} from 'react';
+import Context from '../App/Context';
 import PropTypes from 'prop-types';
-import Icon24AddOutline from '@vkontakte/icons/dist/24/add_outline';
-import firebase from "firebase";
+import { createCard } from "../../actions";
 import CreateForm from '../CreateForm/CreateForm';
 
-const CardCreate = ({onCreate, columnId}) => {
+const CardCreate = ({ columnId }) => {
+  const { addCard } = useContext(Context);
 
-  const createCard = (cardName) => {
-
-    // Add and submit to database a new document in collection "cities"
-    const db = firebase.firestore();
-
-    return db.collection("cards")
-      .add({
-        name: cardName,
-        id: columnId
-      })
-      .then((docRef) => docRef.get())
+  const createItem = (cardName) => {
+    return createCard(cardName, columnId)
       .then((doc) => {
         console.log(doc.id, doc.data());
-        onCreate({
+        addCard({
           id: doc.id,
           ...doc.data()
         })
@@ -31,12 +22,11 @@ const CardCreate = ({onCreate, columnId}) => {
   };
 
   return (
-    <CreateForm onSubmit={createCard} placeholder="Введите название карточки" actionTitle="Создать карточку"/>
+    <CreateForm onSubmit={createItem} placeholder="Введите название карточки" actionTitle="Создать карточку"/>
   )
 };
 
 CardCreate.propTypes = {
-  onCreate: PropTypes.func.isRequired,
   columnId: PropTypes.string.isRequired,
 };
 

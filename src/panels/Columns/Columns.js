@@ -1,37 +1,24 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useContext} from 'react';
+import Context from '../../components/App/Context';
+import './Columns.css';
 import {PanelHeader, Div, Card, CardGrid, Gallery, PanelHeaderBack} from "@vkontakte/vkui/dist/index";
 import PropTypes from 'prop-types';
 import Column from "../../components/Column/Column";
-import firebase from 'firebase';
 import ColumnCreate from '../../components/ColumnCreate/ColumnCreate';
+import {getColumns} from "../../actions";
 
-const Columns = ({goBack, setColumns, columns, removeColumn, addColumn, desk }) => {
+const Columns = () => {
+  const { goToDesks, setColumns, columns, activeDesk } = useContext(Context);
+
   // запрос в базу данных за колонками
   useEffect(() => {
-    const db = firebase.firestore();
-
-    db.collection("columns").where("id", '==', desk.id).get()
-      .then((querySnapshot) => {
-        const columns = [];
-
-        querySnapshot.forEach( (doc) => {
-          const {deskId, name} =  doc.data();
-          columns.push({
-            id: doc.id,
-            deskId,
-            name
-          })
-      });
-
-      setColumns(columns);
-    });
-
+    getColumns(activeDesk.id).then(setColumns);
   }, []);
 
   return (
     <Fragment>
-      <PanelHeader left={<PanelHeaderBack onClick={goBack}/>}>
-        Доска «{desk.name}»
+      <PanelHeader left={<PanelHeaderBack onClick={goToDesks}/>}>
+        Доска «{activeDesk.name}»
       </PanelHeader>
 
       <Gallery
@@ -40,29 +27,14 @@ const Columns = ({goBack, setColumns, columns, removeColumn, addColumn, desk }) 
         align="center"
       >
         {columns.map(({id, name}) =>
-          <Column name={name} key={id} id={id} onDelete={removeColumn}/>
+          <Column name={name} key={id} id={id} />
         )}
-        <ColumnCreate deskId={desk.id} onCreate={addColumn}/>
+        <ColumnCreate/>
       </Gallery>
 
     </Fragment>
   )
 };
 
-Columns.propTypes = {
-  goBack: PropTypes.func.isRequired,
-  setColumns: PropTypes.func.isRequired,
-  columns: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    deskId: PropTypes.string.isRequired,
-  })).isRequired,
-  removeColumn: PropTypes.func.isRequired,
-  addColumn: PropTypes.func.isRequired,
-  desk: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-  }).isRequired,
-}
 
 export default Columns;

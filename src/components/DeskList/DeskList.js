@@ -1,26 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import DeskItem from "../DeskItem/DeskItem";
 import {CardGrid} from "@vkontakte/vkui/dist/index";
 import PropTypes from 'prop-types';
-import firebase from "firebase";
+import {getDesks} from "../../actions";
+import Context from '../../components/App/Context';
 
-const DeskList = ({ desks, onDelete, onLoadDesks, onDeskClick }) => {
-  // Запрос в базу данных за досками
+const DeskList = () => {
+  const { setDesks, desks } = useContext(Context);
+
   useEffect(() => {
-    const db = firebase.firestore();
-
-    db.collection('desks').get().then((querySnapshot) => {
-      const desks = [];
-
-      querySnapshot.forEach((doc) => {
-        desks.push({
-          id: doc.id,
-          name: doc.data().name,
-        });
-      });
-
-      onLoadDesks(desks);
-    });
+    getDesks()
+      .then(desks => setDesks(desks))
   }, []);
 
   if (!desks.length) {
@@ -31,8 +21,6 @@ const DeskList = ({ desks, onDelete, onLoadDesks, onDeskClick }) => {
     <CardGrid>
       {desks.map(({ id, name }) => (
         <DeskItem
-          onClick={() => onDeskClick(id)}
-          onDelete={onDelete}
           key={id}
           id={id}
         >
@@ -43,14 +31,7 @@ const DeskList = ({ desks, onDelete, onLoadDesks, onDeskClick }) => {
   );
 };
 
-DeskList.propTypes = {
-  desks: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-  })).isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onLoadDesks: PropTypes.func.isRequired,
-};
+//
 
 
 export default DeskList;

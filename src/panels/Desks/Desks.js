@@ -1,10 +1,9 @@
-import React, {Fragment, useState, useEffect} from 'react';
-import PropTypes from 'prop-types';
+import React, {Fragment, useEffect, useContext} from 'react';
 import {PanelHeader, Div} from "@vkontakte/vkui/dist/index";
 import DeskList from '../../components/DeskList/DeskList';
 import DeskCreate from '../../components/DeskCreate/DeskCreate';
 
-const Desks = ({onChangePanel, addDesk, removeDesk, setDesks, desks}) => {
+const Desks = () => {
 
   return (
     <Fragment>
@@ -13,18 +12,14 @@ const Desks = ({onChangePanel, addDesk, removeDesk, setDesks, desks}) => {
       </PanelHeader>
 
       <Div>
-        <DeskCreate onCreate={addDesk}/>
+        <DeskCreate />
       </Div>
 
-      <DeskList desks={desks} onDelete={removeDesk} onLoadDesks={setDesks} onDeskClick={onChangePanel}/>
+      <DeskList />
 
     </Fragment>
   )
 };
 
-
-Desks.propTypes = {
-  onChangePanel: PropTypes.func.isRequired,
-}
 
 export default Desks;

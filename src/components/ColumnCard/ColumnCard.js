@@ -1,18 +1,17 @@
-import React, {Fragment} from 'react';
-import {PanelHeader, Div, Card, CardGrid, Button} from "@vkontakte/vkui/dist/index";
-import DeskCreate from "../DeskCreate/DeskCreate";
-import DeskList from "../DeskList/DeskList";
+import React, {useContext} from 'react';
+import Context from '../App/Context';
+import {Div, Card, Button} from "@vkontakte/vkui/dist/index";
 import PropTypes from 'prop-types';
 import '../../panels/Columns/Columns.css';
 import './ColumnCard.css';
-import firebase from "firebase";
+import {deleteCard} from "../../actions";
 
-const ColumnCard = ({children, id, onDelete}) => {
-  const deleteCard = () => {
-    const db = firebase.firestore();
-    db.collection("cards")
-      .doc(id).delete()
-      .then(() => onDelete(id))
+const ColumnCard = ({children, id }) => {
+  const { removeCard } = useContext(Context);
+
+  const deleteItem = () => {
+    deleteCard(id)
+      .then(() => removeCard(id))
       .catch(console.error);
   };
 
@@ -20,7 +19,7 @@ const ColumnCard = ({children, id, onDelete}) => {
     <Card size='l' className="">
       <Div className="ColumnCard__wrapper">
         {children}
-        <Button mode="destructive" onClick={deleteCard}>Удалить</Button>
+        <Button mode="destructive" onClick={deleteItem}>Удалить</Button>
       </Div>
     </Card>
   );
@@ -29,7 +28,6 @@ const ColumnCard = ({children, id, onDelete}) => {
 ColumnCard.propTypes = {
   id: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
-  onDelete: PropTypes.func.isRequired,
 }
 
 export default ColumnCard;
