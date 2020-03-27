@@ -1,21 +1,20 @@
-import React, {useContext} from 'react';
-import {Button, Div, Card, FormLayout, Input} from "@vkontakte/vkui/dist/index";
-import PropTypes from 'prop-types';
-import Context from "../App/Context";
+import React from 'react';
 import CreateForm from '../CreateForm/CreateForm';
-import { createDesk } from '../../actions/index';
+import { createDesk } from '../../actions/firebase';
+import { useDispatch } from 'react-redux';
+import { addDesk } from '../../actions/actions';
 
 const DeskCreate = () => {
-  const { addDesk } = useContext(Context);
+  const dispatch = useDispatch();
+
 
   const createItem = (deskName) => (
     createDesk(deskName)
-      .then((doc) => {
-        console.log(doc.id, doc.data());
-        addDesk({
+      .then((doc) => { 
+        dispatch(addDesk({
           id: doc.id,
           ...doc.data()
-        })
+        }))
       })
       .catch(function(error) {
         console.error("Error writing document: ", error);

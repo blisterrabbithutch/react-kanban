@@ -1,22 +1,27 @@
-import React, {useContext} from 'react';
-import Context from '../App/Context';
+import React from 'react';
 import { Div } from "@vkontakte/vkui/dist/index";
-import PropTypes from 'prop-types';
-import {createColumn} from "../../actions";
-import CreateForm from '../CreateForm/CreateForm';
+import { createColumn } from "../../actions/firebase";
+import ColumnCreateForm from './ColumnCreateForm';
 import '../../panels/Columns/Columns.css';
-
+import {useRoute} from 'react-router5';
+// import { addColumn } from '../../actions/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import {addColumn} from "../../actions/actions";
 
 const ColumnCreate = () => {
-  const { addColumn, activeDesk } = useContext(Context);
+  const dispatch = useDispatch();
+  const desks = useSelector((state) => state.desks);
+
+  const { route: { params : { deskId } } } = useRoute();
+  const desk = desks.find(({ id }) => id === deskId) || {}; 
 
   const createItem = (deskName) => (
-    createColumn(deskName, activeDesk.id)
+    createColumn(deskName, desk.id)
       .then((doc) => {
-        addColumn({
+        dispatch(addColumn({
           id: doc.id,
           ...doc.data()
-        })
+        }))
       })
       .catch(function(error) {
         console.error("Error writing document: ", error);
@@ -25,7 +30,7 @@ const ColumnCreate = () => {
 
   return (
     <Div className="Column">
-      <CreateForm onSubmit={createItem} placeholder="Введите название колонки" actionTitle="Создать колонку"/>
+      <ColumnCreateForm onSubmit={createItem}/>
     </Div>
   )
 };

@@ -1,10 +1,9 @@
-import React, {Fragment, useEffect, useContext} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {PanelHeader, Div} from "@vkontakte/vkui/dist/index";
 import DeskList from '../../components/DeskList/DeskList';
 import DeskCreate from '../../components/DeskCreate/DeskCreate';
 
 const Desks = () => {
-
   return (
     <Fragment>
       <PanelHeader>

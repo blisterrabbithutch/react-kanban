@@ -1,14 +1,15 @@
 .Column__content {
-    background: white;
-    border: 1px solid lightgray;
+    /*background: white;*/
+    /*border: 1px solid lightgray;*/
+    /*background-color: var(--background_light);*/
     box-sizing: border-box;
     padding-top: 15px;
     padding-bottom: 15px;
 }
 
-.Column__content .Button__create {
-    margin-top: 8px;
-}
+/*.Column__content .Button__create {*/
+/*    margin-top: 8px;*/
+/*}*/
 
 .Column__header {
     display: flex;
@@ -19,6 +20,14 @@
 .Column__title {
     flex-grow: 1;
     overflow: hidden;
+}
+
+.Column__header-more-button {
+    border: none;
+}
+
+.Column__title .Header__content {
+    color: var(--white);
 }
 
 .Column {
@@ -35,6 +44,7 @@
     height: auto;
     display: flex;
     flex-direction: column;
+    background-color: var(--dynamic_blue);
 }
 
 .Columns__list .Gallery__viewport {

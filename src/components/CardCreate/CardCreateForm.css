@@ -1,0 +1,18 @@
+.CardCreateForm__input input {
+    /*background-color: var(--white);*/
+    /*border: 1px solid var(--accent);*/
+}
+
+.Cards__create-button-wrapper .Card--md-outline::after {
+    pointer-events: none;
+}
+
+.CardCreateForm__inputs-section {
+    display: flex;
+    justify-content: space-between;
+}
+
+.CardCreateForm__button-add {
+    flex-grow: 1;
+}
+

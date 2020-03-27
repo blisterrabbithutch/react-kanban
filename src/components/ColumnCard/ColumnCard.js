@@ -1,25 +1,25 @@
-import React, {useContext} from 'react';
-import Context from '../App/Context';
-import {Div, Card, Button} from "@vkontakte/vkui/dist/index";
+import React from 'react';
+import {Card, Div} from "@vkontakte/vkui/dist/index";
 import PropTypes from 'prop-types';
 import '../../panels/Columns/Columns.css';
 import './ColumnCard.css';
-import {deleteCard} from "../../actions";
+import {deleteCard} from "../../actions/firebase";
+import {removeCard} from '../../actions/actions';
+import {useDispatch} from 'react-redux';
 
 const ColumnCard = ({children, id }) => {
-  const { removeCard } = useContext(Context);
+  const dispatch = useDispatch();
 
   const deleteItem = () => {
     deleteCard(id)
-      .then(() => removeCard(id))
+      .then(() => dispatch(removeCard(id)))
       .catch(console.error);
   };
 
   return (
-    <Card size='l' className="">
+    <Card size='l' className=""  mode='outline'>
       <Div className="ColumnCard__wrapper">
         {children}
-        <Button mode="destructive" onClick={deleteItem}>Удалить</Button>
       </Div>
     </Card>
   );

@@ -1,20 +1,22 @@
-import React, {useContext} from 'react';
-import Context from '../App/Context';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { createCard } from "../../actions";
-import CreateForm from '../CreateForm/CreateForm';
+import { createCard } from "../../actions/firebase";
+import CardCreateForm from './CardCreateForm';
+import { useDispatch } from 'react-redux';
+import { addCard } from '../../actions/actions';
+
 
 const CardCreate = ({ columnId }) => {
-  const { addCard } = useContext(Context);
+  const dispatch = useDispatch();
 
   const createItem = (cardName) => {
     return createCard(cardName, columnId)
       .then((doc) => {
         console.log(doc.id, doc.data());
-        addCard({
+        dispatch(addCard({
           id: doc.id,
           ...doc.data()
-        })
+        }))
       })
       .catch(function(error) {
         console.error("Error writing document: ", error);
@@ -22,7 +24,7 @@ const CardCreate = ({ columnId }) => {
   };
 
   return (
-    <CreateForm onSubmit={createItem} placeholder="Введите название карточки" actionTitle="Создать карточку"/>
+    <CardCreateForm onSubmit={createItem} />
   )
 };
 

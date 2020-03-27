@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {Button, Div, Card, FormLayout, Input} from "@vkontakte/vkui/dist/index";
 import PropTypes from 'prop-types';
 import Icon24AddOutline from '@vkontakte/icons/dist/24/add_outline';
-import { useCreateForm } from "./hooks";
+import { useCreateForm } from "../CreateForm/hooks";
 
-const CreateForm = ({ onSubmit, placeholder, actionTitle }) => {
+const ColumnCreateForm = ({ onSubmit }) => {
   const {
     mode,
     deskName,
@@ -19,8 +19,8 @@ const CreateForm = ({ onSubmit, placeholder, actionTitle }) => {
 
   if (isButtonMode) {
     return (
-      <Button className="Button__create" before={<Icon24AddOutline/>} size='xl' onClick={setFormMode}>
-        {actionTitle}
+      <Button className="Button__create" mode="overlay_secondary" before={<Icon24AddOutline/>} size='xl' onClick={setFormMode}>
+        Добавить колонку
       </Button>
     )
   }
@@ -33,11 +33,11 @@ const CreateForm = ({ onSubmit, placeholder, actionTitle }) => {
           autoFocus
           onChange={onChangeInput}
           status={inputStatus}
-          placeholder={placeholder}
+          placeholder="Введите название колонки"
         />
         <div>
           <Button size='xl' onClick={submit }>
-            {actionTitle}
+            Добавить
           </Button>
           <Button mode='tertiary' size='xl' onClick={formReset}>
             Отменить
@@ -48,10 +48,8 @@ const CreateForm = ({ onSubmit, placeholder, actionTitle }) => {
   )
 };
 
-CreateForm.propTypes = {
+ColumnCreateForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  placeholder: PropTypes.string.isRequired,
-  actionTitle: PropTypes.string.isRequired,
 };
 
-export default CreateForm;
+export default ColumnCreateForm;

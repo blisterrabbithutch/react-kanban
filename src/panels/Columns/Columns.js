@@ -1,30 +1,43 @@
 import React, {Fragment, useEffect, useContext} from 'react';
-import Context from '../../components/App/Context';
 import './Columns.css';
-import {PanelHeader, Div, Card, CardGrid, Gallery, PanelHeaderBack} from "@vkontakte/vkui/dist/index";
-import PropTypes from 'prop-types';
+import {PanelHeader, Gallery, PanelHeaderBack} from "@vkontakte/vkui/dist/index";
 import Column from "../../components/Column/Column";
 import ColumnCreate from '../../components/ColumnCreate/ColumnCreate';
-import {getColumns} from "../../actions";
+import {getColumns} from "../../actions/firebase";
+import { useRoute } from 'react-router5';
+import { useSelector, useDispatch } from 'react-redux';
+import { setColumns, setActivePanel } from '../../actions/actions';
+import { pages } from '../../router';
 
-const Columns = () => {
-  const { goToDesks, setColumns, columns, activeDesk } = useContext(Context);
+const Columns = () => { 
+  const dispatch = useDispatch();
+  const columns = useSelector((state) => state.columns);
+  const desks = useSelector((state) => state.desks);
+
+  const goToDesks = () => {
+    dispatch(setActivePanel(pages.DESKS));
+  };
+
+  const { route: { params : { deskId } } } = useRoute();
+  const desk = desks.find(({ id }) => id === deskId) || {};
 
   // запрос в базу данных за колонками
   useEffect(() => {
-    getColumns(activeDesk.id).then(setColumns);
-  }, []);
+    if (desk.id) {
+      getColumns(desk.id).then((columns) => dispatch(setColumns(columns)));
+    }
+  }, [desk]);
 
   return (
     <Fragment>
       <PanelHeader left={<PanelHeaderBack onClick={goToDesks}/>}>
-        Доска «{activeDesk.name}»
+        Доска {desk.name ? `«${desk.name}»` : ''}
       </PanelHeader>
 
       <Gallery
         className="Columns__list"
-        slideWidth="100%"
-        align="center"
+        slideWidth="85%"
+        align="left"
       >
         {columns.map(({id, name}) =>
           <Column name={name} key={id} id={id} />

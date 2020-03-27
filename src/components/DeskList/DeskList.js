@@ -1,16 +1,18 @@
-import React, {useEffect, useContext} from 'react';
+import React, { useEffect } from 'react';
 import DeskItem from "../DeskItem/DeskItem";
 import {CardGrid} from "@vkontakte/vkui/dist/index";
-import PropTypes from 'prop-types';
-import {getDesks} from "../../actions";
-import Context from '../../components/App/Context';
+import { useSelector, useDispatch } from 'react-redux';
+import { getDesks } from '../../actions/firebase';
+import { setDesks } from '../../actions/actions';
+
 
 const DeskList = () => {
-  const { setDesks, desks } = useContext(Context);
+  const dispatch = useDispatch();
+  const desks = useSelector((state) => state.desks);
 
   useEffect(() => {
     getDesks()
-      .then(desks => setDesks(desks))
+      .then((desks) => dispatch(setDesks(desks)))
   }, []);
 
   if (!desks.length) {
