@@ -2,7 +2,7 @@ import 'core-js/features/map';
 import 'core-js/features/set';
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import connect from '@vkontakte/vk-connect';
+import vkBridge from '@vkontakte/vk-bridge';
 import AppContainer from './app/components/App/AppContainer';
 import { initializeFirebase } from './api/firebase';
 import * as router from './router/index';
@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Init VK  Mini App
-// connect.send('VKWebAppInit');
+vkBridge.send('VKWebAppInit');
 
 
 const route = router.initialize();

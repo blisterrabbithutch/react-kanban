@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@vkontakte/icons": "^1.16.3",
+    "@vkontakte/vk-bridge": "^2.1.7",
     "@vkontakte/vk-connect": "^1.9.0",
     "@vkontakte/vkui": "^3.2.0",
     "@welldone-software/why-did-you-render": "^4.0.7",
