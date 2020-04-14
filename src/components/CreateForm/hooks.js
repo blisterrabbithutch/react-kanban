@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
-const modes = {
+export const modes = {
   button: 'button',
-  form: 'form'
+  form: 'form',
 };
 
 const statuses = {
@@ -10,30 +10,33 @@ const statuses = {
   error: 'error',
 };
 
-export const useCreateForm = ({ onSubmit }) => {
+export const useCreateForm = ({ initialMode = modes.button, initialValue = '', onSubmit, onCancel }) => {
 
-  const [mode, setMode] = useState(modes.button);
-  const [deskName, setDeskName] = useState('');
+  const [mode, setMode] = useState(initialMode);
+  const [deskName, setDeskName] = useState(initialValue);
   const [inputStatus, setInputStatus] = useState('default');
   const onChangeInput = (event) => setDeskName(event.target.value);
   const isButtonMode = mode === modes.button;
 
-  const formReset = () => {
-    setInputStatus(statuses.default);
+  const formReset = useCallback(() => {
+    onCancel && onCancel();
     setMode(modes.button);
+    setInputStatus(statuses.default);
     setDeskName('');
-  };
+  }, [onCancel]);
 
-  const submit = (evt) => {
-    if (evt) {
-      evt.preventDefault();
+  const submit = useCallback((event) => {
+    if (event) {
+      event.preventDefault();
     }
+
     if (!deskName.trim().length) {
       setInputStatus(statuses.error);
       return;
     }
+
     onSubmit(deskName).then(formReset);
-  };
+  }, [deskName, onSubmit, formReset]);
 
   const setFormMode = () => setMode(modes.form);
   const setButtonMode = () => setMode(modes.button);

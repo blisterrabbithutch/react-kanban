@@ -1,0 +1,10 @@
+.DeskItem__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.DeskItem__content button {
+    margin-left: 10px;
+    border: none;
+}
